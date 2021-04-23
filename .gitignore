@@ -1,0 +1,22 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+**/__pycache__/**
+
+venv/
+build/
+dist/
+**/build/**
+**/dist/**
+**/*.spec
+*.spec
+–onefile.spec
+
+**/*.dat
+**/*.csv
+**/*.mp3
+**/*.wav
+**/*.exe
+**/*.mp4
