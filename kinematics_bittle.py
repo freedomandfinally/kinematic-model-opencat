@@ -13,8 +13,8 @@ deg2rad = pi / 180
 rad2deg = 180 / pi
 
 # Dimensions Bittle (should not be changed - all values in cm)
-upperArmLength = 4.5
-lowerArmLength = 5.0
+upperArmLength = 4.6
+lowerArmLength = 4.8
 bodyLength = 10.5
 bodyWidth = 9.7
 
