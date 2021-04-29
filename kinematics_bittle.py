@@ -19,18 +19,18 @@ bodyLength = 10.5
 bodyWidth = 9.7
 
 # Variable parameters
-distanceFloor = 6.0  # Distance torso to floor
-stepLength = 3.5  # Longitudinal movement of each paw within one period
-swingHeight = 0.5  # Amplitude for swing
-swingFactorLegs = 5  # Increase swing amplitude for legs
-leanForward = 0.0  # Shifting torso in x-direction
-stanceFront = 0.0  # Distance of front paws from shoulder in x-direction
-stanceBack = 3  # Distance of back paws from hip in negative x-direction
+distanceFloor = 6.0  # Distance torso to floor 躯干到地板的距离
+stepLength = 3.5  # Longitudinal movement of each paw within one period 每只脚在一个周期内的纵向运动
+swingHeight = 0.5  # Amplitude for swing 摆幅
+swingFactorLegs = 5  # Increase swing amplitude for legs 腿的摆动增加幅度
+leanForward = 0.0  # Shifting torso in x-direction 在x方向上移动躯干
+stanceFront = 0.0  # Distance of front paws from shoulder in x-direction 前爪距肩膀在x方向上的距离
+stanceBack = 3  # Distance of back paws from hip in negative x-direction 后爪距髋部在x方向上的距离
 
 # Number of Frames
-frames = 57
+frames = 4
 
-# Kinematic chain of Bittle
+# Kinematic chain of Bittle Bittle运动链
 left_arm = Chain(name='left_arm', links=[
     URDFLink(
         name="center",
@@ -161,19 +161,24 @@ right_leg = Chain(name='right_leg', links=[
 
 
 def buildGait(frames):
+    """
+    构建步态
+    :param frames:
+    :return:
+    """
     frame = np.arange(0, frames)
     swingEnd = pi / 2
 
-    # longitudinal Movement
+    # longitudinal Movement 纵向运动
     swing = -cos(2 * (frame * 2 * pi / frames))
     stance = +cos(2 / 3 * (frame * 2 * pi / frames - swingEnd))
-    swingSlice = np.less_equal(frame, swingEnd / (2 * pi / frames))
-    stanceSlice = np.invert(swingSlice)
-    longitudinalMovement = np.concatenate((swing[swingSlice], stance[stanceSlice]))
+    swingSlice = np.less_equal(frame, swingEnd / (2 * pi / frames))  # 小于等于
+    stanceSlice = np.invert(swingSlice)  # 倒置
+    longitudinalMovement = np.concatenate((swing[swingSlice], stance[stanceSlice]))  # 数组拼接
     longitudinalMovement = np.concatenate(
         (longitudinalMovement, longitudinalMovement, longitudinalMovement, longitudinalMovement))
 
-    # vertical Movement
+    # vertical Movement 横向运动
     lift = sin(2 * (frame * 2 * pi / frames))  # np.ones(frames)
     liftSlice = swingSlice
     verticalMovement = np.concatenate((lift[liftSlice], np.zeros(np.count_nonzero(stanceSlice))))
